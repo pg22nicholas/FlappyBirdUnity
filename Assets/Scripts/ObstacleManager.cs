@@ -9,7 +9,7 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private ObstacleSet m_ObstacleSetPrefab;
     [SerializeField] private Camera camera;
 
-    List<ObstacleSet> obstacleSetList = new List<ObstacleSet>();
+    List<ObstacleSet> m_ObstacleSetList = new List<ObstacleSet>();
 
     public static ObstacleManager PropertyInstance { 
         get { return s_PropertyInstance; }
@@ -33,17 +33,24 @@ public class ObstacleManager : MonoBehaviour
     public void CreateNewObstacle()
     {
         ObstacleSet set = Instantiate(m_ObstacleSetPrefab);
-        obstacleSetList.Add(set);
+        m_ObstacleSetList.Add(set);
 
         // Apply an offset only if there has been a previously spawned obstacle
-        if (obstacleSetList.Count != 0)
+        if (m_ObstacleSetList.Count != 0)
         {
-            float yPosPrevObstacle = obstacleSetList[obstacleSetList.Count - 1].gameObject.transform.position.y;
+            float yPosPrevObstacle = m_ObstacleSetList[m_ObstacleSetList.Count - 1].gameObject.transform.position.y;
             float yScreenPos = Camera.main.WorldToViewportPoint(new Vector3(0, yPosPrevObstacle, 0)).y;
             float newYScreenPos = Mathf.Clamp(Random.Range(yScreenPos - .15f, yScreenPos + .15f), .1f, .9f);
             float newYScreenPosWorld = Camera.main.ViewportToWorldPoint(new Vector3(0, newYScreenPos, 0)).y;
-            set.ApplyYPos(newYScreenPosWorld);
+            set.ApplyInitialYPos(newYScreenPosWorld);
         }
 
+    }
+
+    public void DestroyLastObstacle()
+    {
+        ObstacleSet setToRemove = m_ObstacleSetList[0];
+        m_ObstacleSetList.RemoveAt(0);
+        Destroy(setToRemove.gameObject);
     }
 }

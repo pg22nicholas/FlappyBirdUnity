@@ -5,8 +5,9 @@ public class ObstacleSet : MonoBehaviour
     [SerializeField] private Obstacle m_TopObstaclePrefab;
     [SerializeField] private Obstacle m_BottomObstaclePrefab;
     [SerializeField] private float m_MoveSpeed = 5f;
-    [SerializeField] private float centerOffset = 1f;
-    [SerializeField] float scaleWidth = 1.5f;
+
+    [SerializeField] public float scaleWidth = 1.5f;
+    [SerializeField] public float centerOffset = 1f;
 
     private void Awake()
     { 
@@ -24,7 +25,7 @@ public class ObstacleSet : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().size = new Vector2(bottomObstacle.transform.localScale.x, 1);
     }
 
-    public void ApplyYPos(float yPos)
+    public void ApplyInitialYPos(float yPos)
     {
         gameObject.transform.position = (new Vector2(transform.position.x, yPos));
     }
@@ -38,10 +39,5 @@ public class ObstacleSet : MonoBehaviour
     {
         Vector2 moveVector = new Vector2(m_MoveSpeed * Time.deltaTime * -1, 0);
         gameObject.transform.Translate(moveVector);
-    }
-
-    void Spawn()
-    {
-        
     }
 }

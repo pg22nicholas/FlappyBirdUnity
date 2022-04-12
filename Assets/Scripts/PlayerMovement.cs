@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RigidBody.AddForce(Vector2.up * 300);
+            RigidBody.velocity = Vector2.up * 4.5f;
         }
     }
 
