@@ -41,11 +41,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Obstacle obstacle = collision.GetComponent<Obstacle>();
-        if (obstacle != null)
+        if (collision.GetComponent<Obstacle>() != null)
         {
-            Debug.Log("Bird collided");
+            Debug.Log("Collided Obstacle");
             // TODO:
+        } else if (collision.GetComponent<ScreenBounds>() != null)
+        {
+            Debug.Log("Collided Bounds");
         }
     }
 }
