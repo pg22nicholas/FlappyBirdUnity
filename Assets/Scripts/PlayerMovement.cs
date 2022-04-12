@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         // applt downwards z rotation
         else
         {
-            currEulerAngle -= 200 * Time.deltaTime;
+            currEulerAngle -= 50 * Time.deltaTime * RigidBody.velocity.y * -1;
             transform.localRotation = Quaternion.Euler(0, 0, Mathf.Clamp(currEulerAngle, m_MinZRot, m_MaxZRot));
         }
     }
