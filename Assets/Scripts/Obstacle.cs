@@ -15,6 +15,7 @@ public class Obstacle : MonoBehaviour
 
         Vector3 scale = gameObject.transform.localScale;
         gameObject.transform.localScale = new Vector3(scale.x * widthScale, scale.y, scale.z);
+        // Applies position by world scale as parent not sent immediately
         gameObject.transform.localPosition = new Vector3(0, yPos);
     }
 }

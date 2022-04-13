@@ -6,33 +6,31 @@ public class ObstacleSet : MonoBehaviour
     [SerializeField] private Obstacle m_BottomObstaclePrefab;
     [SerializeField] private float m_MoveSpeed = 5f;
 
-    [SerializeField] public float scaleWidth = 1.5f;
-    [SerializeField] public float centerOffset = 1f;
-
+    [SerializeField] public float m_scaleWidth = 1.5f;
+    [SerializeField] public float m_scaleGap = 2f;
+     
     private void Awake()
-    { 
+    {
+        // Set y scale of center of obstacle box collider
+        gameObject.GetComponent<BoxCollider2D>().size = new Vector2(1, m_scaleGap);
+
         // Create top and bottom obstacles
         var topObstacle = Instantiate(m_TopObstaclePrefab, new Vector2(0, 0), Quaternion.identity);
-        topObstacle.InitiateObstacle(scaleWidth, centerOffset + topObstacle.GetComponent<Renderer>().bounds.extents.y, gameObject.transform);
+        topObstacle.InitiateObstacle(m_scaleWidth, m_scaleGap / 2 + topObstacle.GetComponent<Renderer>().bounds.extents.y, transform);
         var bottomObstacle = Instantiate(m_BottomObstaclePrefab, new Vector2(0, 0), Quaternion.identity);
-        bottomObstacle.InitiateObstacle(scaleWidth, -centerOffset - bottomObstacle.GetComponent<Renderer>().bounds.extents.y, gameObject.transform);
+        bottomObstacle.InitiateObstacle(m_scaleWidth, -m_scaleGap / 2 - bottomObstacle.GetComponent<Renderer>().bounds.extents.y, gameObject.transform);
 
         // Push this object off screen so the children are spawned off screen
         gameObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1, .5f, 10));
         gameObject.transform.Translate(new Vector2(bottomObstacle.GetComponent<Renderer>().bounds.extents.x, 0));
 
-        // Make colldier width same as obstacle widths
-        gameObject.GetComponent<BoxCollider2D>().size = new Vector2(bottomObstacle.transform.localScale.x, 1);
+        // set x scale of center of box collider to equal children
+        gameObject.GetComponent<BoxCollider2D>().size = new Vector2(bottomObstacle.transform.localScale.x, gameObject.GetComponent<BoxCollider2D>().size.y);
     }
 
     public void ApplyInitialYPos(float yPos)
     {
         gameObject.transform.position = (new Vector2(transform.position.x, yPos));
-    }
-
-    void Start()
-    {
-        
     }
 
     void Update()

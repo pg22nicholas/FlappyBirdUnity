@@ -70,13 +70,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.collider.tag == "floor")
         {
-            Debug.Log("Hit floor");
             KillPlayer();
             isStopped = true;
         } 
         else if (collision.collider.tag == "ceiling")
         {
-            Debug.Log("Hit ceiling");
             KillPlayer();
         }
     }
