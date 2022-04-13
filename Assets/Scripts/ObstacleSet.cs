@@ -40,6 +40,15 @@ public class ObstacleSet : MonoBehaviour
             Vector2 moveVector = new Vector2(m_MoveSpeed * Time.deltaTime * -1, 0);
             gameObject.transform.Translate(moveVector);
         }
-        
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log(collision);
+        if (collision.tag == "Player")
+        {
+            Debug.Log("POINT");
+            ObstacleManager.PropertyInstance.OnClearedGap();
+        }
     }
 }

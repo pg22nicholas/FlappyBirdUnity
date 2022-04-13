@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObstacleManager : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private ObstacleSet m_ObstacleSetPrefab;
     [SerializeField] private Camera camera;
     [SerializeField] private LoseBlink loseBlink;
+    [SerializeField] private Text ScoreText;
 
     List<ObstacleSet> m_ObstacleSetList = new List<ObstacleSet>();
 
+    private int m_score = 0;
     private bool m_IsPlayerLost = false;
 
     public static ObstacleManager PropertyInstance { 
@@ -68,5 +71,11 @@ public class ObstacleManager : MonoBehaviour
     public bool GetPlayerLost()
     {
         return m_IsPlayerLost;
+    }
+
+    public void OnClearedGap()
+    {
+        if (!m_IsPlayerLost)
+            ScoreText.text = (++m_score).ToString();
     }
 }

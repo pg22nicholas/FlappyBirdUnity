@@ -68,12 +68,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "floor")
+        if (collision.collider.tag == "Floor")
         {
             KillPlayer();
             isStopped = true;
         } 
-        else if (collision.collider.tag == "ceiling")
+        else if (collision.collider.tag == "Ceiling")
         {
             KillPlayer();
         }
