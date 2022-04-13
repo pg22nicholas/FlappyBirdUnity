@@ -8,6 +8,7 @@ public class ObstacleManager : MonoBehaviour
 
     [SerializeField] private ObstacleSet m_ObstacleSetPrefab;
     [SerializeField] private Camera camera;
+    [SerializeField] private LoseBlink loseBlink;
 
     List<ObstacleSet> m_ObstacleSetList = new List<ObstacleSet>();
 
@@ -57,6 +58,10 @@ public class ObstacleManager : MonoBehaviour
 
     public void SetPlayerLost(bool isPlayerLost)
     {
+        // Set screen blink only when player set from not dead to dead
+        if (!m_IsPlayerLost && isPlayerLost)
+            loseBlink.BlinkWhite();
+
         m_IsPlayerLost = isPlayerLost;
     }
 
