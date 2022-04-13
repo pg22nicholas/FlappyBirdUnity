@@ -37,7 +37,11 @@ public class ObstacleSet : MonoBehaviour
 
     void Update()
     {
-        Vector2 moveVector = new Vector2(m_MoveSpeed * Time.deltaTime * -1, 0);
-        gameObject.transform.Translate(moveVector);
+        if (!ObstacleManager.PropertyInstance.GetPlayerLost())
+        {
+            Vector2 moveVector = new Vector2(m_MoveSpeed * Time.deltaTime * -1, 0);
+            gameObject.transform.Translate(moveVector);
+        }
+        
     }
 }

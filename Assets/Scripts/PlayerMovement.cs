@@ -9,18 +9,30 @@ public class PlayerMovement : MonoBehaviour
     private float m_MaxZRot = 38f;
     private float m_MinZRot = -90f;
 
+    private Animator animator;
+
     void Start()
     {
         RigidBody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!ObstacleManager.PropertyInstance.GetPlayerLost())
         {
-            RigidBody.velocity = Vector2.up * 4.5f;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RigidBody.velocity = Vector2.up * 4.5f;
+            }
+        } 
+        else
+        {
+            Debug.Log("stop");
+            animator.enabled = false;
         }
+        
 
         float currEulerAngle = transform.eulerAngles.z;
         // set from -180 to 180
@@ -31,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
             currEulerAngle += 500 * Time.deltaTime;
             transform.localRotation = Quaternion.Euler(0, 0, Mathf.Clamp(currEulerAngle, m_MinZRot, m_MaxZRot));
         } 
-        // applt downwards z rotation
+        // apply downwards z rotation
         else
         {
             currEulerAngle -= 50 * Time.deltaTime * RigidBody.velocity.y * -1;
@@ -43,11 +55,25 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.GetComponent<Obstacle>() != null)
         {
-            Debug.Log("Collided Obstacle");
-            // TODO:
-        } else if (collision.GetComponent<ScreenBounds>() != null)
+            ObstacleManager.PropertyInstance.SetPlayerLost(true);
+        }
+        else if (collision.GetComponent<ScreenBounds>() != null)
         {
-            Debug.Log("Collided Bounds");
+            Debug.Log("Bounds Hit");
+            ObstacleManager.PropertyInstance.SetPlayerLost(true);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Obstacle>() != null)
+        {
+            ObstacleManager.PropertyInstance.SetPlayerLost(true);
+        }
+        else if (collision.gameObject.GetComponent<ScreenBounds>() != null)
+        {
+            Debug.Log("Bounds Hit");
+            ObstacleManager.PropertyInstance.SetPlayerLost(true);
         }
     }
 }

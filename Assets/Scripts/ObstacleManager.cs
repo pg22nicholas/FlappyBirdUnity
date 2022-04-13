@@ -11,6 +11,8 @@ public class ObstacleManager : MonoBehaviour
 
     List<ObstacleSet> m_ObstacleSetList = new List<ObstacleSet>();
 
+    private bool m_IsPlayerLost = false;
+
     public static ObstacleManager PropertyInstance { 
         get { return s_PropertyInstance; }
     }
@@ -44,7 +46,6 @@ public class ObstacleManager : MonoBehaviour
             float newYScreenPosWorld = Camera.main.ViewportToWorldPoint(new Vector3(0, newYScreenPos, 0)).y;
             set.ApplyInitialYPos(newYScreenPosWorld);
         }
-
     }
 
     public void DestroyLastObstacle()
@@ -52,5 +53,15 @@ public class ObstacleManager : MonoBehaviour
         ObstacleSet setToRemove = m_ObstacleSetList[0];
         m_ObstacleSetList.RemoveAt(0);
         Destroy(setToRemove.gameObject);
+    }
+
+    public void SetPlayerLost(bool isPlayerLost)
+    {
+        m_IsPlayerLost = isPlayerLost;
+    }
+
+    public bool GetPlayerLost()
+    {
+        return m_IsPlayerLost;
     }
 }
