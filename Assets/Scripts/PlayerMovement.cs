@@ -10,16 +10,27 @@ public class PlayerMovement : MonoBehaviour
     private float m_MinZRot = -90f;
 
     private Animator animator;
+    private bool isStopped = false;
+
+    private Rigidbody2D rigidbody;
 
     void Start()
     {
         RigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Dont update anything if stopped (at bottom of screen)
+        if (isStopped)
+        {
+            return;
+        }
+
+        // Player input if still alive
         if (!ObstacleManager.PropertyInstance.GetPlayerLost())
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -27,12 +38,22 @@ public class PlayerMovement : MonoBehaviour
                 RigidBody.velocity = Vector2.up * 4.5f;
             }
         } 
+        // Otherwise player dead, stop animation
         else
         {
             Debug.Log("stop");
             animator.enabled = false;
         }
         
+        // if at bottom of screen
+        if (gameObject.transform.position.y < Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y ||
+            Mathf.Abs(gameObject.transform.position.y - Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y) < .01)
+        {
+            Debug.Log("Stopped");
+            Destroy(rigidbody);
+            isStopped = true;
+        }
+
 
         float currEulerAngle = transform.eulerAngles.z;
         // set from -180 to 180
@@ -55,11 +76,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.GetComponent<Obstacle>() != null)
         {
+            Debug.Log("Trigger obstacle Hit");
             ObstacleManager.PropertyInstance.SetPlayerLost(true);
         }
         else if (collision.GetComponent<ScreenBounds>() != null)
         {
-            Debug.Log("Bounds Hit");
+            Debug.Log("Trigger boundary Hit");
             ObstacleManager.PropertyInstance.SetPlayerLost(true);
         }
     }
@@ -68,11 +90,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Obstacle>() != null)
         {
+            Debug.Log("Collision obstacle");
             ObstacleManager.PropertyInstance.SetPlayerLost(true);
         }
         else if (collision.gameObject.GetComponent<ScreenBounds>() != null)
         {
-            Debug.Log("Bounds Hit");
+            Debug.Log("Collision boundary");
             ObstacleManager.PropertyInstance.SetPlayerLost(true);
         }
     }
