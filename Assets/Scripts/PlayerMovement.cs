@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private float upwardsForce = 4.5f;
 
-    Rigidbody2D RigidBody;
+    
     private float m_MaxZRot = 38f;
     private float m_MinZRot = -90f;
-
-    private Animator animator;
     private bool isStopped = false;
 
-    private Rigidbody2D rigidbody;
+    private Rigidbody2D RigidBody;
+    private Animator Animator;
 
     void Start()
     {
         RigidBody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        Animator = GetComponent<Animator>();
+        RigidBody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         // Dont update anything if stopped (at bottom of screen)
         if (isStopped)
         {
+            RigidBody.Sleep();
             return;
         }
 
@@ -35,24 +36,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                RigidBody.velocity = Vector2.up * 4.5f;
+                RigidBody.velocity = Vector2.up * upwardsForce;
             }
         } 
-        // Otherwise player dead, stop animation
-        else
-        {
-            Debug.Log("stop");
-            animator.enabled = false;
-        }
-        
-        // if at bottom of screen
-        if (gameObject.transform.position.y < Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y ||
-            Mathf.Abs(gameObject.transform.position.y - Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y) < .01)
-        {
-            Debug.Log("Stopped");
-            Destroy(rigidbody);
-            isStopped = true;
-        }
 
 
         float currEulerAngle = transform.eulerAngles.z;
@@ -76,27 +62,29 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.GetComponent<Obstacle>() != null)
         {
-            Debug.Log("Trigger obstacle Hit");
-            ObstacleManager.PropertyInstance.SetPlayerLost(true);
-        }
-        else if (collision.GetComponent<ScreenBounds>() != null)
-        {
-            Debug.Log("Trigger boundary Hit");
-            ObstacleManager.PropertyInstance.SetPlayerLost(true);
+            KillPlayer();
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Obstacle>() != null)
+        if (collision.collider.tag == "floor")
         {
-            Debug.Log("Collision obstacle");
-            ObstacleManager.PropertyInstance.SetPlayerLost(true);
-        }
-        else if (collision.gameObject.GetComponent<ScreenBounds>() != null)
+            Debug.Log("Hit floor");
+            KillPlayer();
+            isStopped = true;
+        } 
+        else if (collision.collider.tag == "ceiling")
         {
-            Debug.Log("Collision boundary");
-            ObstacleManager.PropertyInstance.SetPlayerLost(true);
+            Debug.Log("Hit ceiling");
+            KillPlayer();
         }
     }
+
+    private void KillPlayer()
+    {
+        ObstacleManager.PropertyInstance.SetPlayerLost(true);
+        Animator.enabled = false;
+    }
+
 }
