@@ -44,10 +44,8 @@ public class ObstacleSet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log(collision);
         if (collision.tag == "Player")
         {
-            Debug.Log("POINT");
             ObstacleManager.PropertyInstance.OnClearedGap();
         }
     }
