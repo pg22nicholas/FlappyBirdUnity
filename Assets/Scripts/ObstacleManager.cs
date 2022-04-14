@@ -16,6 +16,7 @@ public class ObstacleManager : MonoBehaviour
 
     private int m_score = 0;
     private bool m_IsPlayerLost = false;
+    private bool m_IsGameStarted = false;
 
     public static ObstacleManager PropertyInstance { 
         get { return s_PropertyInstance; }
@@ -32,8 +33,6 @@ public class ObstacleManager : MonoBehaviour
         {
             s_PropertyInstance = this;
         }
-
-        CreateNewObstacle();
     }
 
     public void CreateNewObstacle()
@@ -59,23 +58,33 @@ public class ObstacleManager : MonoBehaviour
         Destroy(setToRemove.gameObject);
     }
 
-    public void SetPlayerLost(bool isPlayerLost)
-    {
-        // Set screen blink only when player set from not dead to dead
-        if (!m_IsPlayerLost && isPlayerLost)
-            loseBlink.BlinkWhite();
-
-        m_IsPlayerLost = isPlayerLost;
-    }
-
-    public bool GetPlayerLost()
-    {
-        return m_IsPlayerLost;
-    }
-
     public void OnClearedGap()
     {
         if (!m_IsPlayerLost)
             ScoreText.text = (++m_score).ToString();
+    }
+
+    public bool IsPlayerLost
+    {
+        get { return m_IsPlayerLost;  }
+        set
+        {
+            // Set screen blink only when player set from not dead to dead
+            if (!m_IsPlayerLost && value)
+                loseBlink.BlinkWhite();
+
+            m_IsPlayerLost = value;
+        }
+    }
+
+    public bool IsGameStarted
+    {
+        get { return m_IsGameStarted; }
+        set { 
+            // If swapping to game being started, then spawn first obstacle
+            if (value && !m_IsGameStarted)
+                CreateNewObstacle();
+            m_IsGameStarted = value;
+        }
     }
 }

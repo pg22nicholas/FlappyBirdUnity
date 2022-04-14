@@ -31,15 +31,14 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        // Player input if still alive
-        if (!ObstacleManager.PropertyInstance.GetPlayerLost())
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                RigidBody.velocity = Vector2.up * upwardsForce;
-            }
-        } 
+        CheckPlayerJumpInput();
 
+        // keep player extended in air until input pressed
+        if (!ObstacleManager.PropertyInstance.IsGameStarted)
+        {
+            RigidBody.Sleep();
+            return;
+        }
 
         float currEulerAngle = transform.eulerAngles.z;
         // set from -180 to 180
@@ -55,6 +54,19 @@ public class PlayerMovement : MonoBehaviour
         {
             currEulerAngle -= 50 * Time.deltaTime * RigidBody.velocity.y * -1;
             transform.localRotation = Quaternion.Euler(0, 0, Mathf.Clamp(currEulerAngle, m_MinZRot, m_MaxZRot));
+        }
+    }
+
+    public void CheckPlayerJumpInput()
+    {
+        // Player input if still alive
+        if (!ObstacleManager.PropertyInstance.IsPlayerLost)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ObstacleManager.PropertyInstance.IsGameStarted = true;
+                RigidBody.velocity = Vector2.up * upwardsForce;
+            }
         }
     }
 
@@ -81,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void KillPlayer()
     {
-        ObstacleManager.PropertyInstance.SetPlayerLost(true);
+        ObstacleManager.PropertyInstance.IsPlayerLost = true;
         Animator.enabled = false;
     }
 
