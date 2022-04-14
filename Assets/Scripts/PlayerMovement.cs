@@ -10,12 +10,14 @@ public class PlayerMovement : MonoBehaviour
     private float m_MaxZRot = 38f;
     private float m_MinZRot = -90f;
     private bool isStopped = false;
+    private Quaternion startRotation;
 
     private Rigidbody2D RigidBody;
     private Animator Animator;
 
     void Start()
     {
+        startRotation = gameObject.transform.localRotation;
         RigidBody = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         RigidBody = GetComponent<Rigidbody2D>();
@@ -97,4 +99,11 @@ public class PlayerMovement : MonoBehaviour
         Animator.enabled = false;
     }
 
+    public void ResetPlayer()
+    {
+        isStopped = false;
+        transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, transform.position.z);
+        transform.rotation = startRotation;
+        Animator.enabled = true;
+    }
 }

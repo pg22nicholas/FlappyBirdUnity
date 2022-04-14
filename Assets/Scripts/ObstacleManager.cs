@@ -12,6 +12,8 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private LoseBlink loseBlink;
     [SerializeField] private Text ScoreText;
     [SerializeField] private BackgroundMovement backgroundMovement;
+    [SerializeField] private GameObject EndGameUI;
+    [SerializeField] private PlayerMovement playerMovement;
 
     List<ObstacleSet> m_ObstacleSetList = new List<ObstacleSet>();
 
@@ -25,6 +27,7 @@ public class ObstacleManager : MonoBehaviour
 
     private void Awake()
     {
+        EndGameUI.SetActive(false);
         // make sure there is only ever one instance of the singleton
         if (s_PropertyInstance != null && s_PropertyInstance != this)
         {
@@ -38,7 +41,6 @@ public class ObstacleManager : MonoBehaviour
 
     public void CreateNewObstacle()
     {
-        Debug.Log("Create Obstacle");
         ObstacleSet set = Instantiate(m_ObstacleSetPrefab);
         m_ObstacleSetList.Add(set);
 
@@ -56,7 +58,7 @@ public class ObstacleManager : MonoBehaviour
     public void DestroyLastObstacle()
     {
         ObstacleSet setToRemove = m_ObstacleSetList[0];
-        m_ObstacleSetList.RemoveAt(0);
+        m_ObstacleSetList.RemoveAt(m_ObstacleSetList.Count - 1);
         Destroy(setToRemove.gameObject);
     }
 
@@ -76,6 +78,7 @@ public class ObstacleManager : MonoBehaviour
             {
                 loseBlink.BlinkWhite();
                 backgroundMovement.IsStopScrolling = true;
+                EndGameUI.SetActive(true);
             }
                 
 
@@ -92,5 +95,20 @@ public class ObstacleManager : MonoBehaviour
                 CreateNewObstacle();
             m_IsGameStarted = value;
         }
+    }
+
+    public void StartNewGame()
+    {
+        playerMovement.ResetPlayer();
+        for (int i = 0; i < m_ObstacleSetList.Count; i++)
+        {
+            Destroy(m_ObstacleSetList[i].gameObject);
+        }
+        m_ObstacleSetList.Clear();
+        m_score = 0;
+        m_IsPlayerLost = false;
+        m_IsGameStarted = false;
+        EndGameUI.SetActive(false);
+        backgroundMovement.IsStopScrolling = false;
     }
 }
