@@ -10,6 +10,8 @@ public class BackgroundMovement : MonoBehaviour
     private float m_BoundSizeX;
     private float m_StartingX;
 
+    private bool m_IsStopScrolling = false;
+
     void Start()
     {
         _camera = Camera.main;
@@ -20,7 +22,7 @@ public class BackgroundMovement : MonoBehaviour
 
     void Update()
     {
-        if (!ObstacleManager.PropertyInstance.IsPlayerLost)
+        if (!m_IsStopScrolling)
         {
             transform.Translate(new Vector3(-m_BackgroundMoveSpeed * Time.deltaTime, 0, 0), Space.World);
             if (transform.position.x < m_StartingX - m_BoundSizeX)
@@ -28,5 +30,10 @@ public class BackgroundMovement : MonoBehaviour
                 transform.Translate(new Vector3(m_BoundSizeX, 0, 0), Space.World);
             }
         }
+    }
+
+    public bool IsStopScrolling 
+    {
+        set { m_IsStopScrolling = value;  }
     }
 }

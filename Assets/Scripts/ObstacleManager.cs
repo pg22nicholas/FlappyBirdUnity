@@ -11,6 +11,7 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private LoseBlink loseBlink;
     [SerializeField] private Text ScoreText;
+    [SerializeField] private BackgroundMovement backgroundMovement;
 
     List<ObstacleSet> m_ObstacleSetList = new List<ObstacleSet>();
 
@@ -37,10 +38,11 @@ public class ObstacleManager : MonoBehaviour
 
     public void CreateNewObstacle()
     {
+        Debug.Log("Create Obstacle");
         ObstacleSet set = Instantiate(m_ObstacleSetPrefab);
         m_ObstacleSetList.Add(set);
 
-        // Apply an offset only if there has been a previously spawned obstacle
+        // Apply a gap offset only if there has been a previously spawned obstacle
         if (m_ObstacleSetList.Count != 0)
         {
             float yPosPrevObstacle = m_ObstacleSetList[m_ObstacleSetList.Count - 1].gameObject.transform.position.y;
@@ -71,7 +73,11 @@ public class ObstacleManager : MonoBehaviour
         {
             // Set screen blink only when player set from not dead to dead
             if (!m_IsPlayerLost && value)
+            {
                 loseBlink.BlinkWhite();
+                backgroundMovement.IsStopScrolling = true;
+            }
+                
 
             m_IsPlayerLost = value;
         }
