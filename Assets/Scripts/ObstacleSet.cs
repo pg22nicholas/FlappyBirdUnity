@@ -28,6 +28,7 @@ public class ObstacleSet : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().size = new Vector2(bottomObstacle.transform.localScale.x, gameObject.GetComponent<BoxCollider2D>().size.y);
     }
 
+    // Set y to center of screen
     public void ApplyInitialYPos(float yPos)
     {
         gameObject.transform.position = (new Vector2(transform.position.x, yPos));
@@ -35,6 +36,7 @@ public class ObstacleSet : MonoBehaviour
 
     void Update()
     {
+        // keep moving obstacles if player still alive
         if (!ObstacleManager.PropertyInstance.IsPlayerLost)
         {
             Vector2 moveVector = new Vector2(m_MoveSpeed * Time.deltaTime * -1, 0);

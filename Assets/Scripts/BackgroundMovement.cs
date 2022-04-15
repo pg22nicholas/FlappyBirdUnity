@@ -19,6 +19,7 @@ public class BackgroundMovement : MonoBehaviour
         m_StartingX = gameObject.GetComponent<SpriteRenderer>().transform.position.x;
     }
 
+    // Scroll background, resetting position to original once a full tile cycle has passed
     void Update()
     {
         if (!m_IsStopScrolling)

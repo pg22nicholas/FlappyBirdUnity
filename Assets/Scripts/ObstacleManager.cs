@@ -39,6 +39,7 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
+    // Spawn new obstacle just off the screen
     public void CreateNewObstacle()
     {
         ObstacleSet set = Instantiate(m_ObstacleSetPrefab);
@@ -55,13 +56,20 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
+    // Destroy the oldest obstacle in the scene
     public void DestroyLastObstacle()
     {
-        ObstacleSet setToRemove = m_ObstacleSetList[0];
-        m_ObstacleSetList.RemoveAt(0);
-        Destroy(setToRemove.gameObject);
+        // revent deleting from empty list, or when player is dead
+        if (m_ObstacleSetList.Count > 0)
+        {
+            // remove from front of list
+            ObstacleSet setToRemove = m_ObstacleSetList[0];
+            m_ObstacleSetList.RemoveAt(0);
+            Destroy(setToRemove.gameObject);
+        }
     }
 
+    // increment score whenever obstacle gap is cleared
     public void OnClearedGap()
     {
         if (!m_IsPlayerLost)
@@ -99,11 +107,9 @@ public class ObstacleManager : MonoBehaviour
     {
         ScoreText.text = "0";
         playerMovement.ResetPlayer();
-        for (int i = 0; i < m_ObstacleSetList.Count; i++)
-        {
-            Destroy(m_ObstacleSetList[i].gameObject);
-        }
-        m_ObstacleSetList.Clear();
+
+        while (m_ObstacleSetList.Count > 0)
+            DestroyLastObstacle();
         m_score = 0;
         m_IsPlayerLost = false;
         m_IsGameStarted = false;

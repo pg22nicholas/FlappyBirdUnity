@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
-
     public void InitiateObstacle(float widthScale, float yPos, Transform parent)
     {
         gameObject.transform.SetParent(parent);

@@ -99,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
         Animator.enabled = false;
     }
 
+    // Reset player to start game over
     public void ResetPlayer()
     {
         isStopped = false;

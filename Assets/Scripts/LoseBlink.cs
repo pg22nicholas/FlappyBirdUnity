@@ -18,6 +18,7 @@ public class LoseBlink : MonoBehaviour
         StartCoroutine(ColorLerpTo(Color.white, 1));
     }
 
+    // Lerp from white to transparent to simulate a flash of light
     public IEnumerator ColorLerpTo(Color _color, float duration)
     {
         float elapsedTime = 0.0f;

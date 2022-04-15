@@ -13,6 +13,7 @@ public class MenuScript : MonoBehaviour
         m_PlayButton.onClick.AddListener(PlayGame);
     }
 
+    // Goto game
     void PlayGame() {
         SceneManager.LoadScene("GameScene");
     }
