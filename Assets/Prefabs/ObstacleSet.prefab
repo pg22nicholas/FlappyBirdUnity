@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TopObstaclePrefab: {fileID: 6933787668149950051, guid: 219b6d795f2759a43b5ecb0de11e633a, type: 3}
-  m_BottomObstaclePrefab: {fileID: 474838996709771763, guid: 781d59394f7397542969bb1906994856, type: 3}
+  m_BottomObstaclePrefab: {fileID: 1167463518315509676, guid: 781d59394f7397542969bb1906994856, type: 3}
   m_MoveSpeed: 5
   m_scaleWidth: 1.5
   m_scaleGap: 2

@@ -15,14 +15,14 @@ public class ObstacleSet : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().size = new Vector2(1, m_scaleGap);
 
         // Create top and bottom obstacles
-        var topObstacle = Instantiate(m_TopObstaclePrefab, new Vector2(0, 0), Quaternion.identity);
-        topObstacle.InitiateObstacle(m_scaleWidth, m_scaleGap / 2 + topObstacle.GetComponent<Renderer>().bounds.extents.y, transform);
-        var bottomObstacle = Instantiate(m_BottomObstaclePrefab, new Vector2(0, 0), Quaternion.identity);
-        bottomObstacle.InitiateObstacle(m_scaleWidth, -m_scaleGap / 2 - bottomObstacle.GetComponent<Renderer>().bounds.extents.y, gameObject.transform);
+        var topObstacle = Instantiate(m_TopObstaclePrefab);
+        topObstacle.InitiateObstacle(m_scaleWidth, m_scaleGap / 2 + topObstacle.GetComponent<BoxCollider2D>().bounds.extents.y, transform);
+        var bottomObstacle = Instantiate(m_BottomObstaclePrefab);
+        bottomObstacle.InitiateObstacle(m_scaleWidth, -m_scaleGap / 2 - bottomObstacle.GetComponent<BoxCollider2D>().bounds.extents.y, gameObject.transform);
 
         // Push this object off screen so the children are spawned off screen
         gameObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1, .5f, 10));
-        gameObject.transform.Translate(new Vector2(bottomObstacle.GetComponent<Renderer>().bounds.extents.x, 0));
+        gameObject.transform.Translate(new Vector2(bottomObstacle.GetComponent<BoxCollider2D>().bounds.extents.x, 0));
 
         // set x scale of center of box collider to equal children
         gameObject.GetComponent<BoxCollider2D>().size = new Vector2(bottomObstacle.transform.localScale.x, gameObject.GetComponent<BoxCollider2D>().size.y);
