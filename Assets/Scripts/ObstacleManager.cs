@@ -58,7 +58,7 @@ public class ObstacleManager : MonoBehaviour
     public void DestroyLastObstacle()
     {
         ObstacleSet setToRemove = m_ObstacleSetList[0];
-        m_ObstacleSetList.RemoveAt(m_ObstacleSetList.Count - 1);
+        m_ObstacleSetList.RemoveAt(0);
         Destroy(setToRemove.gameObject);
     }
 
@@ -80,8 +80,6 @@ public class ObstacleManager : MonoBehaviour
                 backgroundMovement.IsStopScrolling = true;
                 EndGameUI.SetActive(true);
             }
-                
-
             m_IsPlayerLost = value;
         }
     }
@@ -99,6 +97,8 @@ public class ObstacleManager : MonoBehaviour
 
     public void StartNewGame()
     {
+        Debug.Log("new game");
+        ScoreText.text = "0";
         playerMovement.ResetPlayer();
         for (int i = 0; i < m_ObstacleSetList.Count; i++)
         {

@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -683,13 +683,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1731671054}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1731671055}
+        m_TargetAssemblyTypeName: ObstacleManager, Assembly-CSharp
+        m_MethodName: StartNewGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -971,7 +971,8 @@ MonoBehaviour:
   loseBlink: {fileID: 1870014752}
   ScoreText: {fileID: 1840790770}
   backgroundMovement: {fileID: 2052804933}
-  EndGameUI: {fileID: 0}
+  EndGameUI: {fileID: 1304589668}
+  playerMovement: {fileID: 1972436306}
 --- !u!4 &1731671056
 Transform:
   m_ObjectHideFlags: 0
