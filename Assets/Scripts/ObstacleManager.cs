@@ -97,7 +97,6 @@ public class ObstacleManager : MonoBehaviour
 
     public void StartNewGame()
     {
-        Debug.Log("new game");
         ScoreText.text = "0";
         playerMovement.ResetPlayer();
         for (int i = 0; i < m_ObstacleSetList.Count; i++)

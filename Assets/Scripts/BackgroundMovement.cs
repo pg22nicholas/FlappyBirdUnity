@@ -16,7 +16,6 @@ public class BackgroundMovement : MonoBehaviour
     {
         _camera = Camera.main;
         m_BoundSizeX = gameObject.GetComponent<SpriteRenderer>().sprite.bounds.size.x * gameObject.transform.localScale.x;
-        Debug.Log( m_BoundSizeX);
         m_StartingX = gameObject.GetComponent<SpriteRenderer>().transform.position.x;
     }
 
